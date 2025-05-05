@@ -40,7 +40,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _defulttext = TextEditingController(
-    text: "+91",
+    text: "+00",
   );
   final TextEditingController phoneNum = TextEditingController();
   int otp = 0000;
