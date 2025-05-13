@@ -1,0 +1,2 @@
+D:/Brnocake_DeliverApp/android/app/.cxx/RelWithDebInfo/381lg3y5/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/Brnocake_DeliverApp/android/app/.cxx/RelWithDebInfo/381lg3y5/armeabi-v7a/CMakeFiles/rebuild_cache.dir

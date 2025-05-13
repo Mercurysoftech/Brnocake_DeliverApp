@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task1/Home.dart';
 import 'package:task1/Services/Api_services.dart';
 import 'package:task1/Services/auth.dart';
 import 'package:task1/Services/notifications.dart';
+import 'package:task1/earning.dart';
+import 'package:task1/history.dart';
+import 'package:task1/hometap.dart';
 import 'package:task1/otpenter.dart';
+import 'package:task1/profilletap.dart';
 
 void main() {
   //NotificationService().initNotification();
@@ -21,6 +26,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder: (context, child) => MaterialApp(
+        initialRoute: '/Myhome',
+        routes: {
+          '/Myhome': (context) => Home(),
+          '/Earning': (context) => Earning(),
+          '/History': (context) => History(),
+          '/profile': (context) => Profilletap(),
+        },
         theme: ThemeData(fontFamily: GoogleFonts.ubuntu().fontFamily),
         home: MyWidget(),
       ),
@@ -66,53 +78,57 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          colors: [
-            Color(0xFFF9B4BD),
-            Color(0xFFFFFCFC),
-            Color(0xFFF9B4BD),
-            // Color(0xFFFFFCFC),
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+            colors: [
+              Color(0xFFF9B4BD),
+              Color(0xFFFFFCFC),
+              Color(0xFFF9B4BD),
+              // Color(0xFFFFFCFC),
 
-            // Color(0xFFFFFCFC),
-            // Color(0xFFF9B4BD),
-            // Color(0xFFFFFCFC),
-            // Color(0xFFF9B4BD),
-          ],
-          //stops: [0.1, 0.6, 0.8],
-          stops: [0.5, 0.7, .9],
-          //stops: [0.6, 0.7, 0.6, 0.7],
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-        )),
-        child: Column(children: [
-          Padding(
-            padding: EdgeInsets.only(left: 278.w, top: 76.h),
-            child: Image.asset(
-              'assets/Logo.png',
-              width: 75,
-              height: 18,
+              // Color(0xFFFFFCFC),
+              // Color(0xFFF9B4BD),
+              // Color(0xFFFFFCFC),
+              // Color(0xFFF9B4BD),
+            ],
+            //stops: [0.1, 0.6, 0.8],
+            stops: [0.5, 0.7, .9],
+            //stops: [0.6, 0.7, 0.6, 0.7],
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+          )),
+          child: Column(children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  left: screenWidth * 0.75, top: screenHeight * 0.07),
+              child: Image.asset(
+                'assets/Logo.png',
+                width: 75,
+                height: 18,
+              ),
             ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Center(
-            child: Image.asset(
-              'assets/Character.png',
-              width: 246,
-              height: 216,
+            SizedBox(
+              height: screenHeight * 0.012,
             ),
-          ),
-          SizedBox(
-            height: 70,
-          ),
-          Expanded(
-            child: Container(
+            Center(
+              child: Image.asset(
+                'assets/Character.png',
+                width: 246,
+                height: 216,
+              ),
+            ),
+            SizedBox(
+              height: screenHeight * 0.09,
+            ),
+            Container(
+              //constraints: BoxConstraints.expand(),
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(left: 0, right: 0),
               margin: EdgeInsets.only(left: 0, right: 0),
@@ -123,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 color: Colors.white,
               ),
-              //width: 395,
+              //width: double.infinity,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,10 +271,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 50.h,
+                      height: screenHeight * 0.09,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 20.h),
+                      padding: EdgeInsets.only(bottom: screenHeight * 0.013),
                       child: Text(
                         'By continuing, you agree to our Terms of Service & Privacy Policy',
                         textAlign: TextAlign.center,
@@ -268,10 +284,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Color(0xFF8C8C8C)),
                       ),
                     ),
+                    SizedBox(height: 100)
                   ]),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }

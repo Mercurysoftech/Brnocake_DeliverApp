@@ -28,6 +28,7 @@ class Myhome extends StatefulWidget {
 
 class _MyhomeState extends State<Myhome> {
   bool isSwitched = false;
+  bool isLoading = true;
   String? token;
 
   Orederstatuscout? orderStatus;
@@ -85,6 +86,21 @@ class _MyhomeState extends State<Myhome> {
     });
   }
 
+  void loadSwitchState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedValue = prefs.getBool('isSwitched') ?? false;
+
+    setState(() {
+      isSwitched = savedValue;
+      isLoading = false;
+    });
+  }
+
+  void updateSwitchState(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSwitched', value);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -95,10 +111,13 @@ class _MyhomeState extends State<Myhome> {
     NotificationService().initNotification();
     homecheckfunction();
     deliveryorder();
+    loadSwitchState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       // appBar: AppBar(
       //   leading: Image.asset(
@@ -228,36 +247,41 @@ class _MyhomeState extends State<Myhome> {
                           color: isSwitched ? Color(0xFF13A145) : Colors.red,
                           fontSize: 13),
                     ),
-                    trailing: SizedBox(
-                      width: 48,
-                      height: 26,
-                      child: CupertinoSwitch(
-                          activeColor: isSwitched
-                              ? Color(0xFF8BDAC2)
-                              : Color(0xFFDA8B8D),
-                          thumbColor: isSwitched
-                              ? Color.fromARGB(255, 8, 119, 15)
-                              : Colors.red,
-                          value: isSwitched,
-                          onChanged: (value) {
-                            setState(() {
-                              isSwitched = value;
-                              //isSwitched ? 1 : 0;
-                              print('isSwitched: $isSwitched');
-                            });
-                            print('working...........');
-                            gettoken();
-                            statucode();
-                            if (isSwitched == true) {
-                              NotificationService().showNotification(
-                                  title: 'Document Verification in Progress ',
-                                  body:
-                                      'Once completed, your verified orders will appear',
-                                  payload: 'item x');
-                              print('fuction was working');
-                            }
-                          }),
-                    ),
+                    trailing: isLoading
+                        ? CircularProgressIndicator()
+                        : SizedBox(
+                            width: 48,
+                            height: 26,
+                            child: CupertinoSwitch(
+                                activeColor: isSwitched
+                                    ? Color(0xFF8BDAC2)
+                                    : Color(0xFFDA8B8D),
+                                thumbColor: isSwitched
+                                    ? Color.fromARGB(255, 8, 119, 15)
+                                    : Colors.red,
+                                value: isSwitched,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isSwitched = value;
+                                    //isSwitched ? 1 : 0;
+                                    print('isSwitched: $isSwitched');
+                                  });
+                                  updateSwitchState(value);
+
+                                  print('working...........');
+                                  gettoken();
+                                  statucode();
+                                  if (isSwitched == true) {
+                                    NotificationService().showNotification(
+                                        title:
+                                            'Document Verification in Progress ',
+                                        body:
+                                            'Once completed, your verified orders will appear',
+                                        payload: 'item x');
+                                    print('fuction was working');
+                                  }
+                                }),
+                          ),
                   ),
                 ),
                 Container(
@@ -343,7 +367,8 @@ class _MyhomeState extends State<Myhome> {
                         print('Yes Wroking');
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 14),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.04),
                         height: 132,
                         width: 104,
                         decoration: BoxDecoration(
@@ -388,6 +413,9 @@ class _MyhomeState extends State<Myhome> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      width: 1,
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -418,6 +446,8 @@ class _MyhomeState extends State<Myhome> {
                         );
                       },
                       child: Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.001),
                         //margin: EdgeInsets.symmetric(horizontal: 5),
                         //margin: EdgeInsets.symmetric(horizontal: 5),
                         height: 132,

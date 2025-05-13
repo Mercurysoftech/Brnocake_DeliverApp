@@ -166,31 +166,30 @@ class _ProfileimageState extends State<Profileimage> {
                   child: ElevatedButton(
                     onPressed: () {
                       Apiservices().enterDetails();
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          transitionDuration:
-                              Duration(milliseconds: 300), // Animation Speed
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  SubmissionSuccessScreen(),
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            const begin = Offset(1.0, 0.0); // Start from Right
-                            const end = Offset.zero; // End at Normal Position
-                            const curve = Curves.easeInOut;
+                      Navigator.pushAndRemoveUntil(
+  context,
+  PageRouteBuilder(
+    transitionDuration: Duration(milliseconds: 300),
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        SubmissionSuccessScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.easeInOut;
 
-                            var tween = Tween(begin: begin, end: end)
-                                .chain(CurveTween(curve: curve));
-                            var offsetAnimation = animation.drive(tween);
+      var tween = Tween(begin: begin, end: end)
+          .chain(CurveTween(curve: curve));
+      var offsetAnimation = animation.drive(tween);
 
-                            return SlideTransition(
-                              position: offsetAnimation,
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+  ),
+  (Route<dynamic> route) => false, // This removes all previous routes
+);
+
                     },
                     child: Text(
                       'Continue',
